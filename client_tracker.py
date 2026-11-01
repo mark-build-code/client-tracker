@@ -26,17 +26,21 @@ class Clients:
                 result.append(client)
         return result  
           
+
+    def update(self, condition, **changes):
+        found = self.find(condition)             
+        for client in found:               
+            client.extra.update(changes)        
+
 def is_active(client):
     return client.status 
+
 
 def from_minsk(client):
     if "city" in client.extra and client.extra["city"] == "Минск":
         return True
     else:
         return False   
-
-
-
 
 
 
@@ -70,3 +74,7 @@ print(len(minsk_clients))   # 1
 print(len(book.find(is_active)))              # 1 (у нас один активный)
 print(len(book.find(is_active, limit=1)))     # 1
 print(len(book.find(is_active, limit=0)))     # 0 
+
+book.update(is_active, city="Брест")
+print(c1.extra)   # {'city': 'Брест', 'phone_number': '123'}
+print(c2.extra)   # {}
